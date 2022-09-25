@@ -1,0 +1,98 @@
+openapi: 3.0.0
+info:
+    version: 1.0.0
+    title: Aviate Backend task
+    description: Job Review API
+
+server:
+    - url: http://127.0.0.1:8000
+
+tags:
+    - name: Candidate
+      description: API to manage Candidate Data
+
+paths:
+    /:
+        get:
+            summary: Get List of all Candidates
+            tags: [Candidate]
+            responses:
+                "200":
+                    description: The list of all Candidate
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Candidate"
+        post:
+            summary: Add a single Candidate
+            tags: [Candidate] 
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/definitions/CandidatePatchDocument"
+            responses:
+                "200":
+                    description: Candidate was created successfully
+components:
+    schemas:
+        Candidate:
+            type: object
+            required:
+                - name
+                - age
+                - resume
+                - gender
+                - status
+            properties:
+                name:
+                    type: string
+                    description:  Name of the Candidate
+                age:
+                    type: number
+                    description:  Last Name of the Candidate
+                resume :
+                    type: file
+                    description: Upload Resume of the Candidate
+                gender :
+                    type: "string"
+                    enum: [ "Male", "Female", "Decline to Answer"]
+                    description: "Select Candidate gender here."
+                    required: true
+                status :
+                    type: "string"
+                    enum: [ "Pending", "Accepted", "Not Accepted"]
+                    required: true
+            example:
+                name: Shashank
+                age : 20
+                gender : Male
+                status : Pending
+
+definitions:
+  Candidate:
+    type: object
+    items:
+      $ref: "#/definitions/CandidatePatchDocument"
+  CandidatePatchDocument:
+    properties: 
+      name: 
+       type: string 
+       required: true
+      age: 
+       type: number 
+       required: true
+      resume :
+        type: file
+        description: Upload Resume of the Candidate
+        required: true
+      gender :
+        type: "string"
+        enum: [ "Male", "Female", "Decline to Answer"]
+        description: "Select Candidate gender here."
+        required: true
+      status :
+        type: "string"
+        enum: [ "Pending", "Accepted", "Not Accepted"]
+        required: true
